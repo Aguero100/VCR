@@ -955,9 +955,7 @@ def build_features(transactions, customers, categories):
 df_features = build_features(df_transactions, df_customers, CATEGORIES)
 print(f"Признаков создано: {df_features.shape[1]}")
 
-# =====================================================
 # СРАВНИТЕЛЬНЫЙ АНАЛИЗ МОДЕЛЕЙ МАШИННОГО ОБУЧЕНИЯ
-# =====================================================
 
 import numpy as np
 import pandas as pd
@@ -978,9 +976,9 @@ print("=" * 60)
 print("СРАВНИТЕЛЬНЫЙ АНАЛИЗ МОДЕЛЕЙ МАШИННОГО ОБУЧЕНИЯ")
 print("=" * 60)
 
-# ------------------------------------------------------------
+
 # Подготовка данных (используем ваш X_final и y)
-# ------------------------------------------------------------
+
 X_train, X_test, y_train, y_test = train_test_split(
     X_final, y, test_size=0.2, random_state=42
 )
@@ -988,9 +986,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 print(f"\nРазмер обучающей выборки: {X_train.shape}")
 print(f"Размер тестовой выборки: {X_test.shape}")
 
-# ------------------------------------------------------------
 # Очистка названий для LightGBM и CatBoost
-# ------------------------------------------------------------
+
 def clean_feature_names(X):
     X_clean = X.copy()
     X_clean.columns = X_clean.columns.astype(str).str.replace(r'[^\w]', '_', regex=True)
@@ -999,9 +996,9 @@ def clean_feature_names(X):
 X_train_clean = clean_feature_names(X_train)
 X_test_clean = clean_feature_names(X_test)
 
-# ------------------------------------------------------------
+
 # ОБУЧЕНИЕ МОДЕЛЕЙ
-# ------------------------------------------------------------
+
 
 models = {
     'Logistic Regression': MultiOutputClassifier(
@@ -1048,9 +1045,9 @@ models = {
     )
 }
 
-# ------------------------------------------------------------
+
 # ОБУЧЕНИЕ И ОЦЕНКА
-# ------------------------------------------------------------
+
 
 results = []
 
@@ -1091,9 +1088,9 @@ for name, model in models.items():
     except Exception as e:
         print(f"  Ошибка: {str(e)[:100]}")
 
-# ------------------------------------------------------------
+
 # ТАБЛИЦА РЕЗУЛЬТАТОВ
-# ------------------------------------------------------------
+
 
 df_results = pd.DataFrame(results).sort_values('F1 (samples)', ascending=False)
 
@@ -1102,9 +1099,8 @@ print("СРАВНИТЕЛЬНАЯ ТАБЛИЦА КАЧЕСТВА МОДЕЛЕЙ
 print("=" * 70)
 print(df_results.to_string(index=False))
 
-# ------------------------------------------------------------
 # ВЫДЕЛЕНИЕ ЛУЧШЕЙ МОДЕЛИ
-# ------------------------------------------------------------
+
 
 best_model_name = df_results.iloc[0]['Модель']
 best_f1 = df_results.iloc[0]['F1 (samples)']
@@ -1117,9 +1113,9 @@ print(f"Худшая модель: {worst_model_name} (F1 = {worst_f1:.4f})")
 print(f"Разница между лучшей и худшей: {(best_f1 - worst_f1):.4f}")
 print("-" * 50)
 
-# ------------------------------------------------------------
+
 # ВИЗУАЛИЗАЦИЯ СРАВНЕНИЯ
-# ------------------------------------------------------------
+
 
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
@@ -1153,9 +1149,9 @@ plt.tight_layout()
 plt.savefig('models_comparison.png', dpi=150, bbox_inches='tight')
 plt.show()
 
-# ------------------------------------------------------------
+
 # ВЫВОД
-# ------------------------------------------------------------
+
 
 print("\n" + "=" * 60)
 print("ВЫВОД ПО РЕЗУЛЬТАТАМ СРАВНЕНИЯ")
@@ -1319,6 +1315,7 @@ if best_model is not None:
     print(f" F1 = {best_f1:.4f}")
 
 # Сохраняем всё что нужно
+import joblib
 joblib.dump(best_model, 'best_model.pkl')
 joblib.dump(mlb, 'mlb.pkl')
 joblib.dump(CATEGORIES, 'categories.pkl')

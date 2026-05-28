@@ -1097,6 +1097,7 @@ if best_model is not None:
     print(f" F1 = {best_f1:.4f}")
 
 # Сохраняем всё что нужно
+import joblib
 joblib.dump(best_model, 'best_model.pkl')
 joblib.dump(mlb, 'mlb.pkl')
 joblib.dump(CATEGORIES, 'categories.pkl')
